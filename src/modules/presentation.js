@@ -31,11 +31,16 @@ const onlyDeskshares = async (deskshares) => {
 }
 
 const combinedSlidesAndDeskshares = async (slides, deskshares, config, duration) => {
-    const width = slides.viewport.width
-    const height = slides.viewport.height
+    //const width = slides.viewport.width
+    //const height = slides.viewport.height
     const resizedDesksharesVideo = config.workdir + '/deskshare.mp4'
     const presentationTmp = config.workdir + '/presentation.tmp.mp4'
     const presentationOut = config.workdir + '/presentation.mp4'
+
+    const desk = deskshares.parts[0]
+    const width = desk.width
+    const height = desk.height
+
 
     childProcess.execSync(`ffmpeg -hide_banner -loglevel error -threads 4 -i ${deskshares.video} -vf "scale=w=${width}:h=${height}:force_original_aspect_ratio=1,pad=${width}:${height}:(ow-iw)/2:(oh-ih)/2:color=white" -c:v libx264 -preset ultrafast ${resizedDesksharesVideo}`)
     deskshares.parts.forEach((part, index) => {
